@@ -1,6 +1,9 @@
 <template>
-	<div id="app">
-		<router-view></router-view>
+	<div id="app" class="warpper">
+		<keep-alive exclude="Detail">
+			<router-view/>
+		</keep-alive>
+
 		<main-tab-bar></main-tab-bar>
 	</div>
 </template>
@@ -16,6 +19,6 @@
 	};
 </script>
 
-<style>
+<style scoped>
 	@import url("assets/css/base.css");
 </style>
