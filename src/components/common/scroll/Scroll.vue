@@ -33,11 +33,15 @@ export default {
             click: true,
             probeType: this.probeType,
             pullUpLoad: this.pullUpLoad,
+            pullingUp: true,
+            pullUpLoad: true,
         });
-
+        // this.scroll.scrollerHeight = 1000;
         //2.监听滚动的位置
         this.scroll.on("scroll", (position) => {
             this.$emit("scroll", position);
+            this.scroll.refresh();
+            // console.log(this.scroll.refresh());
         });
 
         //3.监听上拉事件
@@ -55,10 +59,18 @@ export default {
         finishPullUp() {
             // console.log('----');
             this.scroll.finishPullUp();
+            // this.scroll && this.scroll.finishPullUp && this.scroll.finishPullUp()
         },
+        /* scrollTo(x, y, time){
+            this.scroll && this.scroll.scrollTo && this.scroll.scrollTo(x, y, time)
+        }, */
         refresh() {
             this.scroll.refresh();
+            // this.scroll && this.scroll.refresh && this.scroll.refresh()
         },
+        /* getCurrentY(){
+            return this.scroll.y ? this.scroll.y :0
+        } */
     },
 };
 </script>

@@ -24,6 +24,8 @@ export default router */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+
+//路由懒加载
 const Home = () => import('views/home/Home')
 const Category = () => import('views/category/Category')
 const Cart = () => import('views/cart/Cart')
@@ -68,8 +70,6 @@ const router = new VueRouter({
 
 // 导出router的实例
 export default router
-
-
 
 
 //设置双击不会报错

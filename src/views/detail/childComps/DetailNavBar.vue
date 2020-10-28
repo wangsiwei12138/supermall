@@ -2,8 +2,8 @@
     <div>
         <nav-bar>
             <div slot="left" class="back" @click="backClick">
-                    <img src="~assets/img/common/back.svg" alt="" />
-                </div>
+                <img src="~assets/img/common/back.svg" alt="" />
+            </div>
             <div slot="center" class="title">
                 <div
                     v-for="(item, index) in titles"
@@ -36,15 +36,17 @@ export default {
     methods: {
         titleClick(index) {
             this.currentIndex = index;
+            this.$emit('titleClick',index)
         },
-        backClick(){
-            this.$router.back()
-        }
+        backClick() {
+            this.$router.back();
+        },
     },
 };
 </script>
 
 <style scoped>
+
 .title {
     display: flex;
     font-size: 12px;
@@ -56,6 +58,9 @@ export default {
 
 .active {
     color: var(--color-high-text);
+    position: relative;
+    z-index: 9;
+    background-color: #fff;
 }
 
 .back img {

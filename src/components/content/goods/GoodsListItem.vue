@@ -1,6 +1,9 @@
 <template>
     <div class="goods-item" @click="itemClick">
-        <img :src="goodsItem.show.img" alt="" @load="imageLoad" />
+        <img :src="showImage" alt="" @load="imgLoad" />
+        <!-- showImage -->
+
+        <!-- goodsItem.show.img -->
         <div class="goods-info">
             <!--  -->
             <p>{{ goodsItem.title }}</p>
@@ -23,15 +26,21 @@ export default {
             },
         },
     },
-    methods: {
-        imageLoad() {
-            // console.log('imageLoad');
-            this.$bus.$emit("itemImageLoad");
+    data() {
+        return {};
+    },
+    computed: {
+        showImage() {
+            return this.goodsItem.image || this.goodsItem.show.img;
         },
-        itemClick(){
-          this.$router.push('/detail/' + this.goodsItem.iid)
-          
-        }
+    },
+    methods: {
+        imgLoad() {
+            this.$bus.$emit("imgLoad");
+        },
+        itemClick() {
+            this.$router.push("/detail/" + this.goodsItem.iid);
+        },
     },
 };
 </script>

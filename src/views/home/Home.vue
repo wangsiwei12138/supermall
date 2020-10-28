@@ -58,6 +58,7 @@ export default {
         GoodList,
         Scroll,
         BackTop,
+
     },
     data() {
         return {
@@ -72,17 +73,26 @@ export default {
             currentType: "pop",
             isShowBackTop: false,
             taboffsetTop: 0,
-            isTabFixed:false
+            isTabFixed:false,
+            // saveY:0,
+            
         };
     },
     computed: {
         showGoods() {
             return this.goods[this.currentType].list;
+            // console.log('111');
         },
     },
-    destroyed () {
-        console.log('home destroyed');
+    activated () {
+         //1.图片加载完成的事件监听
+        const refresh = debounce(this.$refs.scroll.refresh, 50);
+        refresh();
+        console.log('111');
     },
+    /* deactivated () {
+        this.saveY = this.$refs.getCurrentY()
+    }, */
     created() {
         //1.请求多个数据
         this.getHomeMultidata();
@@ -91,7 +101,7 @@ export default {
         this.getHomeGoods("new");
         this.getHomeGoods("sell");
     },
-
+    
     mounted() {
         //1.图片加载完成的事件监听
         const refresh = debounce(this.$refs.scroll.refresh, 50);
