@@ -7,12 +7,6 @@
             :probe-type="3"
             @scroll="contentScroll"
         >
-        <ul>
-            <li v-for="(item,index) in $store.state.cartList" :key="index">
-                {{item}}
-            </li>
-        </ul>
-
             <detail-swiper :top-images="topImages" />
             <detail-base-info :goods="goods" />
             <detail-shop-info :shop="shop" />
@@ -41,7 +35,6 @@ import DetailBottomBar from "./childComps/DetailBottomBar";
 
 // import BackTop from "components/content/backTop/BackTop";
 
-
 import Scroll from "components/common/scroll/Scroll";
 import GoodsList from "components/content/goods/GoodsList";
 
@@ -53,7 +46,7 @@ import {
     getRecommend,
 } from "network/detail";
 import { debounce } from "common/utils";
-import { itemListenerMixin , backTopMixin } from "common/mixin";
+import { itemListenerMixin, backTopMixin } from "common/mixin";
 //
 
 export default {
@@ -72,7 +65,7 @@ export default {
         Scroll,
         GoodsList,
     },
-    mixins: [itemListenerMixin,backTopMixin],
+    mixins: [itemListenerMixin, backTopMixin],
     data() {
         return {
             iid: null,
@@ -88,11 +81,8 @@ export default {
 
             themeTopYs: [],
             getThemeTopY: null,
-            currentIndex:0,
+            currentIndex: 0,
             // isShowBackTop: false,
-
-
-
         };
     },
     created() {
@@ -131,32 +121,6 @@ export default {
             if (data.rate.cRate !== 0) {
                 this.commentInfo = data.rate.list[0];
             }
-
-            /* 
-            //1.第一次获取,值不对。
-            //值不对的原因:this.$refs.params.$el压根没有渲染
-            this.themeTopYs = [];
-
-            this.themeTopYs.push(0);
-            this.themeTopYs.push(this.$refs.params.$el.offsetTop);
-            this.themeTopYs.push(this.$refs.comment.$el.offsetTop);
-            this.themeTopYs.push(this.$refs.recommend.$el.offsetTop);
-            console.log(this.themeTopYs);
-
-            this.$nextTick(() => {
-                //2.第二次获取:值不对
-                //值不对的原因:图片没有计算在类
-                //根据最新的数据，对应的DOM是已经被渲染出来
-                //但是图片依然没有加载完(目前获取到的offsetTop不包含其中的图片)
-                //offsetTop值不对的时候,都是因为图片的问题
-                this.themeTopYs = [];
-
-                this.themeTopYs.push(0);
-                this.themeTopYs.push(this.$refs.params.$el.offsetTop);
-                this.themeTopYs.push(this.$refs.comment.$el.offsetTop);
-                this.themeTopYs.push(this.$refs.recommend.$el.offsetTop);
-                console.log(this.themeTopYs);
-            }); */
         });
 
         //3.请求推荐数据
@@ -173,8 +137,8 @@ export default {
             this.themeTopYs.push(this.$refs.params.$el.offsetTop - 44);
             this.themeTopYs.push(this.$refs.comment.$el.offsetTop - 44);
             this.themeTopYs.push(this.$refs.recommend.$el.offsetTop - 44);
-            this.themeTopYs.push(Number.MAX_VALUE)
-            console.log(this.themeTopYs);
+            this.themeTopYs.push(Number.MAX_VALUE);
+            // console.log(this.themeTopYs);
         }, 100);
     },
 
@@ -194,7 +158,8 @@ export default {
         },
 
         titleClick(index) {
-            console.log(index);
+            // console.log(index);
+            this.$refs.scroll.refresh();
             this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 200);
         },
         contentScroll(position) {
@@ -204,41 +169,31 @@ export default {
 
             let length = this.themeTopYs.length;
 
-            for(let i = 0 ;i< length - 1;i++){
-                // console.log(i+1);
-               /*  if (positionY > this.themeTopYs[i] && positionY < this.themeTopYs[i+1]) {
-                    console.log(i);
-                } */
-
-                if (this.currentIndex !== i && (positionY >= this.themeTopYs[i] && positionY < this.themeTopYs[i+1])) {
+            for (let i = 0; i < length - 1; i++) {
+                if (
+                    this.currentIndex !== i &&
+                    positionY >= this.themeTopYs[i] &&
+                    positionY < this.themeTopYs[i + 1]
+                ) {
                     this.currentIndex = i;
-                    this.$refs.nav.currentIndex = this.currentIndex
-                    
+                    this.$refs.nav.currentIndex = this.currentIndex;
                 }
-
-                /* if ((this.currentIndex !== i ) && ((i < length -1 && positionY > this.themeTopYs[i] && positionY < this.themeTopYs[i+1]) || (i === length -1 && positionY >= this.themeTopYs[i]))) {
-                    this.currentIndex = i;
-                    console.log(this.currentIndex);
-                    this.$refs.nav.currentIndex = this.currentIndex
-                } */
             }
-            // console.log('position')
-
             //是否显示回到顶部
             //1.判断backTop是否显示
-            this.isShowBackTop = (-position.y) > 1000;
+            this.isShowBackTop = -position.y > 1000;
 
             //2.决定tabControl是否吸顶(position:fixed)
-            this.isTabFixed = (-position.y) > this.taboffsetTop
+            this.isTabFixed = -position.y > this.taboffsetTop;
         },
         //点击返回顶部
         /* backClick() {
             this.$refs.scroll.scrollTo(0, 0);
         }, */
-        addToCart(){
+        addToCart() {
             // console.log('---');
-            //1.获取购物车需要展示的信息 
-            const product = {}
+            //1.获取购物车需要展示的信息
+            const product = {};
             product.image = this.topImages[0];
             product.title = this.goods.title;
             product.desc = this.goods.desc;
@@ -248,9 +203,8 @@ export default {
             //2.将商品添加到购物车里
             // this.$store.cartList.push(product)
             // this.$store.commit('addCart',product)
-            this.$store.dispatch('addCart',product)
-        }
-        
+            this.$store.dispatch("addCart", product);
+        },
     },
 };
 </script>
