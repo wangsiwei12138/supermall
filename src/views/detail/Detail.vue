@@ -20,6 +20,7 @@
         </scroll>
         <detail-bottom-bar @addCart="addToCart" />
         <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
+        <!-- <toast :message="message" :show="show" /> -->
     </div>
 </template>
 
@@ -37,6 +38,7 @@ import DetailBottomBar from "./childComps/DetailBottomBar";
 
 import Scroll from "components/common/scroll/Scroll";
 import GoodsList from "components/content/goods/GoodsList";
+// import Toast from "components/common/toast/Toast";
 
 import {
     getDetail,
@@ -48,6 +50,8 @@ import {
 import { debounce } from "common/utils";
 import { itemListenerMixin, backTopMixin } from "common/mixin";
 //
+
+import { mapActions } from "vuex";
 
 export default {
     name: "Detail",
@@ -64,6 +68,7 @@ export default {
         // BackTop,
         Scroll,
         GoodsList,
+        // Toast,
     },
     mixins: [itemListenerMixin, backTopMixin],
     data() {
@@ -83,6 +88,8 @@ export default {
             getThemeTopY: null,
             currentIndex: 0,
             // isShowBackTop: false,
+           /*  message: '',
+            show: false, */
         };
     },
     created() {
@@ -148,12 +155,9 @@ export default {
         this.$bus.$off("imageLoad", this.itemIamgeListener);
     },
     methods: {
-        /* imageLoad() {
-            this.$refs.scroll.refresh();
-        }, */
+        ...mapActions(["addCart"]),
         imageLoad() {
             this.$refs.scroll.refresh();
-            // this.newRefresh()
             this.getThemeTopY();
         },
 
@@ -163,9 +167,7 @@ export default {
             this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 200);
         },
         contentScroll(position) {
-            // console.log(position);
             const positionY = -position.y;
-            //  console.log(Number.MAX_VALUE);
 
             let length = this.themeTopYs.length;
 
@@ -186,12 +188,7 @@ export default {
             //2.决定tabControl是否吸顶(position:fixed)
             this.isTabFixed = -position.y > this.taboffsetTop;
         },
-        //点击返回顶部
-        /* backClick() {
-            this.$refs.scroll.scrollTo(0, 0);
-        }, */
         addToCart() {
-            // console.log('---');
             //1.获取购物车需要展示的信息
             const product = {};
             product.image = this.topImages[0];
@@ -203,7 +200,28 @@ export default {
             //2.将商品添加到购物车里
             // this.$store.cartList.push(product)
             // this.$store.commit('addCart',product)
-            this.$store.dispatch("addCart", product);
+            this.addCart(product).then( res => {
+                // console.log(res);
+                /* this.show = true;
+                this.message = res;
+
+                setTimeout(() => {
+                    this.show = false;
+                    this.message = '';
+                },2000); */
+                this.$toast.show(res,1500)
+            })
+
+            /* this.$store.dispatch("addCart", product).then((res) => {
+                // console.log(res);
+                this.show = true;
+                this.message = res;
+
+                setTimeout(() => {
+                    this.show = false;
+                    this.message = '';
+                },2000);
+            }); */
         },
     },
 };

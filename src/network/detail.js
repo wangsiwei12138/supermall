@@ -21,7 +21,8 @@ export class Goods {
     constructor(itemIofo, columns, services) {
         this.title = itemIofo.title;
         this.desc = itemIofo.desc;
-        this.newPrice = itemIofo.price;
+        // this.newPrice = itemIofo.price;
+        this.newPrice = itemIofo.highNowPrice
         this.oldPrice = itemIofo.oldprice;
         this.discount = itemIofo.discountDesc;
         this.columns = columns;
