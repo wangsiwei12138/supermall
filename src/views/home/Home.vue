@@ -44,12 +44,11 @@ import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabControl/TabControl";
 import GoodList from "components/content/goods/GoodsList";
 import Scroll from "components/common/scroll/Scroll";
-import BackTop from "components/content/backTop/BackTop";
+// import BackTop from "components/content/backTop/BackTop";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
 import { debounce } from "common/utils";
-import { itemListenerMixin , backTopMixin } from "common/mixin";
-
+import { itemListenerMixin, backTopMixin } from "common/mixin";
 
 export default {
     name: "Home",
@@ -61,9 +60,9 @@ export default {
         TabControl,
         GoodList,
         Scroll,
-        BackTop,
+        // BackTop,
     },
-    // mixins: [itemListenerMixin,backTopMixin],
+    mixins: [itemListenerMixin,backTopMixin],
     data() {
         return {
             // result:null
@@ -78,7 +77,7 @@ export default {
             isShowBackTop: false,
             taboffsetTop: 0,
             isTabFixed: false,
-            saveY:0,
+            saveY: 0,
         };
     },
     computed: {
@@ -87,7 +86,6 @@ export default {
         },
     },
     activated() {
-
         this.$refs.scroll.scrollTo(0, this.saveY, 100);
         this.$refs.scroll.refresh();
     },
@@ -146,17 +144,12 @@ export default {
             this.isShowBackTop = -position.y > 1000;
             //2.决定tabControl是否吸顶(position:fixed)
             this.isTabFixed = -position.y > this.taboffsetTop;
-
-            // 判断backTop是否显示
-            /* this.isShowBackTop = position.y < -1000 ? true : false;
-            // 判断tabControl是否吸顶
-            this.isShow = position.y < -this.tabOffsetTop; */
         },
         loadMore() {
             this.getHomeGoods(this.currentType);
         },
         backClick() {
-            this.$refs.scroll.scrollTo(0, 0 , 300);
+            this.$refs.scroll.scrollTo(0, 0, 300);
         },
         swiperImageLoad() {
             this.taboffsetTop = this.$refs.tabControl2.$el.offsetTop;

@@ -8,18 +8,18 @@
 export default {
     name: "Toast",
     props: {
-        /*  message:{
-            type:String,
-            default:''
+        /* message: {
+            type: String,
+            default: "",
         },
-        show:{
-            type:Boolean,
-            dafault:false
-        } */
+        show: {
+            type: Boolean,
+            dafault: false,
+        }, */
     },
     data() {
         return {
-            message: '',
+            message: "",
             isShow: false,
         };
     },
@@ -30,7 +30,7 @@ export default {
 
             setTimeout(() => {
                 this.isShow = false;
-                this.message = '';
+                this.message = "";
             }, duration);
         },
     },

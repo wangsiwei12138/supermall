@@ -56,7 +56,6 @@ export default {
         },
         refresh() {
             this.scroll && this.scroll.refresh && this.scroll.refresh();
-            console.log("111");
         },
         getCurrentY() {
             return this.scroll ? this.scroll.y : 0;

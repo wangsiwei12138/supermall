@@ -20,7 +20,7 @@
         </scroll>
         <detail-bottom-bar @addCart="addToCart" />
         <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
-        <!-- <toast :message="message" :show="show" /> -->
+        <!-- <back-top @click.native="backClick" v-show="isShowBackTop"></back-top> -->
     </div>
 </template>
 
@@ -34,11 +34,8 @@ import DetailParamInfo from "./childComps/DetailParamInfo";
 import DetailCommentInfo from "./childComps/DetailCommentInfo";
 import DetailBottomBar from "./childComps/DetailBottomBar";
 
-// import BackTop from "components/content/backTop/BackTop";
-
 import Scroll from "components/common/scroll/Scroll";
 import GoodsList from "components/content/goods/GoodsList";
-// import Toast from "components/common/toast/Toast";
 
 import {
     getDetail,
@@ -48,8 +45,9 @@ import {
     getRecommend,
 } from "network/detail";
 import { debounce } from "common/utils";
+// import { itemListenerMixin, backTopMixin } from "common/mixin";
 import { itemListenerMixin, backTopMixin } from "common/mixin";
-//
+
 
 import { mapActions } from "vuex";
 
@@ -64,12 +62,10 @@ export default {
         DetailParamInfo,
         DetailCommentInfo,
         DetailBottomBar,
-
-        // BackTop,
         Scroll,
         GoodsList,
-        // Toast,
     },
+    // mixins: [itemListenerMixin, backTopMixin],
     mixins: [itemListenerMixin, backTopMixin],
     data() {
         return {
@@ -82,14 +78,11 @@ export default {
             commentInfo: {},
             recommends: [],
             itemImgLoad: null,
-            // refresh: null,
-
             themeTopYs: [],
             getThemeTopY: null,
             currentIndex: 0,
-            // isShowBackTop: false,
-           /*  message: '',
-            show: false, */
+            isTabFixed: false,
+            saveY: 0,
         };
     },
     created() {
@@ -98,7 +91,6 @@ export default {
 
         //2.根据iid请求详情数据
         getDetail(this.iid).then((res) => {
-            // console.log(res);
             //1.获取数据
             const data = res.result;
 
@@ -145,12 +137,11 @@ export default {
             this.themeTopYs.push(this.$refs.comment.$el.offsetTop - 44);
             this.themeTopYs.push(this.$refs.recommend.$el.offsetTop - 44);
             this.themeTopYs.push(Number.MAX_VALUE);
-            // console.log(this.themeTopYs);
         }, 100);
     },
 
-    mounted() {},
-    updated() {},
+/*     mounted() {},
+    updated() {}, */
     destroyed() {
         this.$bus.$off("imageLoad", this.itemIamgeListener);
     },
@@ -200,28 +191,9 @@ export default {
             //2.将商品添加到购物车里
             // this.$store.cartList.push(product)
             // this.$store.commit('addCart',product)
-            this.addCart(product).then( res => {
-                // console.log(res);
-                /* this.show = true;
-                this.message = res;
-
-                setTimeout(() => {
-                    this.show = false;
-                    this.message = '';
-                },2000); */
-                this.$toast.show(res,1500)
-            })
-
-            /* this.$store.dispatch("addCart", product).then((res) => {
-                // console.log(res);
-                this.show = true;
-                this.message = res;
-
-                setTimeout(() => {
-                    this.show = false;
-                    this.message = '';
-                },2000);
-            }); */
+            this.addCart(product).then((res) => {
+                this.$toast.show(res, 1500);
+            });
         },
     },
 };

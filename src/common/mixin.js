@@ -1,5 +1,6 @@
 import { debounce } from "./utils";
 import BackTop from "components/content/backTop/BackTop";
+// import {BACK_POSITION} from "common/const"
 
 
 export const itemListenerMixin = {
@@ -25,7 +26,7 @@ export const backTopMixin = {
     },
     methods: {
         backClick() {
-            this.$refs.scroll.scrollTo(0, 0);
+            this.$refs.scroll.scrollTo(0 , 0);
         },
     }
 }
